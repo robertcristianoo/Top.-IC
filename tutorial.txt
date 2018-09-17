@@ -1,0 +1,18 @@
+Baixar o git
+	git-scm.com/download/win
+
+escolha a pasta onde estará o diretório
+
+clique sobre a pasta e abra o git bash here
+
+configuração inicial
+	git config --global user.name thetogmoc
+	git config --global user.email rcristiano53@gmail.com
+	git clone https://github.com/thetogmoc/Top.-IC
+
+upando o arquivo para o repositório
+	entre dentro da pasta onde está o arquivo (cd ...)	
+	git status
+	git add 'nome do arquivo'
+	git commit (i + ctrl c + :wq)
+	git push origin master

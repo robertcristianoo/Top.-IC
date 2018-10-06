@@ -1,0 +1,32 @@
+﻿Colocar o nome da equipe no arquivo com a solução da Rastrigin. 
+Notificar a entrega do codigo por meio de issue em lucianna/topicosIC (quem ainda não 
+entregou).
+A função Rastrigin precisa encontrar o f(x) = 0 quando Xi = 0. 
+
+
+Fazer necessariamente o seguinte teste:
+
+
+>> print (rastrigin [0,0,0,0] que seriam o x1, x2, x3, x4
+
+O 
+	resultado deve ser +- ZERO 
+
+
+Não há problema em o código de internet, porém é importante entendê-lo. 
+
+
+Exemplo de github organizado:  mgiovani/topicosIC
+
+
+
+PARA A PRÓXIMA AULA: 
+
+help.github.com/articles/creating_a_pull_request
+
+
+Cada membro deve incluir um arquivo.py com um print no repositório do membro “líder” 
+do projeto para as aulas.
+
+
+

@@ -11,8 +11,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 from collections import Counter
-from pprint import pprint
-
+import seaborn as sns
 
 wine = load_wine()
 #itens da base
@@ -34,25 +33,33 @@ tabela = pd.DataFrame(dados, columns=descri)
 tabela.index 
 #Colunas presentes no DataFrame
 #tabela.columns 
-
-# adicionando a coluna de Preço
-#tabela['Preço'] = y
 tabela.head(10)
 
 
+# MOSTRANDO AS CORELAÇÕES GRAFICAMENTE
 
-# Mostrando graficamente
-plt.scatter(tabela['Álcool'], tabela['intensi-cor'])
-plt.xlabel('Álcool')
-plt.ylabel('ácido málico')
-plt.show()
+# plt.scatter(tabela['Álcool'], tabela['intensi-cor'])
+# plt.xlabel('Álcool')
+# plt.ylabel('ácido málico')
+# plt.show()
+
+sns.lmplot("Álcool", "intensi-cor", tabela, scatter_kws={"marker":"x", "color":"blue"},
+          line_kws={"linewidth":1, "color": "orange"})
+
+sns.lmplot("Alcali", "intensi-cor", tabela, scatter_kws={"marker":"x", "color":"blue"},
+          line_kws={"linewidth":1, "color": "orange"})
+
+sns.lmplot("Ash", "intensi-cor", tabela, scatter_kws={"marker":"x", "color":"blue"},
+          line_kws={"linewidth":1, "color": "orange"})
 
 #Métodos de correlação
 tabela.corr()
+# Correlacionando por cores
+#sns.heatmap(tabela.corr())
 
 # Selecionando 2 colunas 
 X = tabela[["Álcool", "intensi-cor"]]
-print(k)
+#print(k)
 
 # LEMBRETE --> precisamos escolher a variável para fazer a correlação
 
@@ -73,7 +80,6 @@ regr.fit(X_t, y_t)
 # faz a predição
 y_pred = regr.predict(X_v)
 
-# Mostrar o resultado final em um Histograma
 # plt.hist(tabela['Álcool'], color='blue', bins=20)
 # plt.title('Histograma da variável resposta')
 # plt.show()

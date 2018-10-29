@@ -8,6 +8,7 @@ Created on Thu Oct 25 15:50:37 2018
 import pandas
 import numpy as np
 import matplotlib.pyplot as plt
+import scipy.stats as stats
 
 enade2017=pandas.read_csv("datasets\MICRODADOS_ENADE_2017.txt", sep=';',dtype={"DS_VT_ESC_OFG": str, 
                                                                                'DS_VT_ESC_OCE':str,
@@ -24,7 +25,7 @@ enade2017=pandas.read_csv("datasets\MICRODADOS_ENADE_2017.txt", sep=';',dtype={"
 enade2017.shape
 enade2017.columns[0:10]
 
-tabela = pandas.DataFrame(enade2017, columns=['NT_GER', 'CO_CATEGAD', 'CO_GRUPO', 'QE_I08', 'CO_IES', 'QE_I05'])
+tabela = pandas.DataFrame(enade2017, columns=['NT_GER', 'CO_CATEGAD', 'CO_GRUPO'])
 #print(tabela.head(10))
 
 ##limpeza dos dados
@@ -50,8 +51,7 @@ tabela['NT_GER'] = pandas.to_numeric(tabela['NT_GER'])
 #print(tabela['NT_GER'].describe())
 
 #outros comandos
-aux = tabela['NT_GER'].idxmax()
-
+#aux = tabela['NT_GER'].idxmax()
 #print('indice da primeira maior nota: ', aux)
 #print('Maior nota: ', tabela['NT_GER'][aux])
 
@@ -61,43 +61,8 @@ aux = tabela['NT_GER'].idxmax()
 
 ccomp = tabela[tabela['CO_GRUPO']==4004]
 
-print('\n',ccomp)
-
-print('\n',ccomp['NT_GER'].describe())
-
-#do curso do IFNMG
-ifccomp = ccomp[ccomp['CO_IES']==3188]
-#print(ifccomp.describe())
-
-#somente as notas de quem respondeu a questão sobre a renda
-ccomp=ccomp.loc[(ccomp['QE_I08'].notnull())]
-#print(ccomp.NT_GER.describe())
-
-ccomp.QE_I08.head(10)
-
-ccomp['QE_I08'] = ccomp['QE_I08'].map({'A': 1, 'B': 2, 'C': 3, 'D': 4,'E': 5, 'F':6,'G':7})
-
-#print(ccomp.QE_I08.head(10))
-
-#visualmente
-#plt.scatter( ccomp.NT_GER, ccomp.QE_I08)
-#plt.ylabel('Faixa de renda')
-#plt.xlabel('Nota do curso de C. da Comp.')
-#plt.show()
-
-#ESCOLARIDADE DA MÃE
-ccomp.QE_I05 = ccomp['QE_I05'].map({'A': 1, 'B': 2, 'C': 3, 'D': 4,'E': 5, 'F':6})
-
-#print(ccomp.QE_I05.head(10))
-
-#visualmente
-#plt.scatter(ccomp.QE_I05, ccomp.NT_GER)
-#plt.ylabel('Nota do curso de C. da Comp.Escolaridade da mãe')
-#plt.xlabel('Escolaridade da mãe.')
-#plt.show()
-
-escolaridade = ccomp.loc[ccomp.QE_I05 == 1]
-#print(escolaridade.NT_GER.describe())
+#print('\n',ccomp)
+#print('\n',ccomp['NT_GER'].describe())
 
 #ALUNOS COMPUTAÇÃO FEDERAL
 cc_federal = tabela[tabela['CO_CATEGAD'] == 1]
@@ -191,4 +156,35 @@ n, bins, patches = P.hist(x, 10, normed=1, histtype='bar',
                             label=['Federal', 'Estadual', 'Part.Luc.', 'Part.NLuc.'])
 P.legend()
 P.title('Comparativo de Resultados')
-plt.hist ()
+#plt.hist()
+
+teste = pandas.DataFrame(ccomp, columns=['NT_GER', 'CO_CATEGAD'])
+
+teste.NT_GER.hist()
+
+# teste não paramétrico são métodos que não assumem uma distribuição específica para os dados.
+stat, p = stats.mannwhitneyu(teste.NT_GER.loc[teste['CO_CATEGAD'] == 1], teste.NT_GER.loc[teste['CO_CATEGAD'] != 1])
+
+print('Mann-Whitney: Estatisticas=%.3f, p=%.3f' % (stat, p))
+
+alpha = 0.05
+if p > alpha:
+	print('Mesma distribuição')
+else:
+	print('Distribução diferente')
+    
+stat, p = stats.kruskal(teste.NT_GER.loc[teste.CO_CATEGAD == 1], teste.NT_GER.loc[teste.CO_CATEGAD != 1])
+print('Kruskal-Wallis: Estatisticas=%.3f, p=%.3f' % (stat, p))
+
+if p > alpha:
+	print('Mesma distribuição')
+else:
+	print('Distribução diferente')
+    
+#anova
+stat, p = stats.f_oneway(teste.NT_GER.loc[teste.CO_CATEGAD == 1], teste.NT_GER.loc[teste.CO_CATEGAD != 1])
+print('Anova: Estatisticas=%.3f, p=%.3f' % (stat, p))
+if p > alpha:
+	print('Mesma distribuição')
+else:
+	print('Distribução diferente')

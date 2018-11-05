@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """
 Created on Thu Oct 25 15:50:37 2018
-
 @author: Asus
 """
 
@@ -64,10 +63,42 @@ ccomp = tabela[tabela['CO_GRUPO']==4004]
 #print('\n',ccomp)
 #print('\n',ccomp['NT_GER'].describe())
 
+
 #ALUNOS COMPUTAÇÃO FEDERAL
 cc_federal = tabela[tabela['CO_CATEGAD'] == 1]
 cc_federal = cc_federal.loc[tabela['CO_GRUPO'] == 4004]
 print(cc_federal.NT_GER.describe())
+
+# -------------- Histogramas sobrepostos para melhor visualização ---------------
+# Descomentar a parte a ser visualizada pelo plot
+
+# ALUNOS COMPUTAÇÃO FEDERAL E NÃO FEDERAL
+# cc_federal.NT_GER.loc[cc_federal.CO_CATEGAD == 1].hist(label="Federais")
+# cc_part.NT_GER.loc[cc_part.CO_CATEGAD != 1].hist(label="Não Federais")
+
+# ALUNOS COMPUTAÇÃO FEDERAL E ESTADUAL
+cc_federal.NT_GER.loc[cc_federal.CO_CATEGAD == 1].hist(label="Federais")
+cc_partE.NT_GER.loc[cc_partE.CO_CATEGAD == 2].hist(label="Estaduais")
+
+
+# ALUNOS COMPUTAÇÃO FEDERAL E PRIVADA LUCRATIVA
+# cc_federal.NT_GER.loc[cc_federal.CO_CATEGAD == 1].hist(label="Federais")
+# cc_partPL.NT_GER.loc[cc_partPL.CO_CATEGAD == 4].hist(label="Privadas Lucrativas")
+
+
+# # ALUNOS COMPUTAÇÃO FEDERAL E PRIVADA N LUCRATIVO
+# cc_federal.NT_GER.loc[cc_federal.CO_CATEGAD == 1].hist(label="Federais")
+# cc_partPNL.NT_GER.loc[cc_partPNL.CO_CATEGAD == 5].hist(label="Privadas Não Lucrativas")
+
+
+plt.xlabel("Nota ENADE")
+plt.ylabel("Quantidade de Alunos")
+plt.legend()
+
+# comando para salvar em formato png
+# plt.savefig('Federal-Não Federais.png')
+
+# ---------------------------------------------------------------------------------
 
 #Plot
 plt.hist(cc_federal.NT_GER, 100, normed=True, color='green')
@@ -146,7 +177,7 @@ plt.legend()
 plt.grid()
 plt.show()
 
-#PLOTS - visualization
+# PLOTS - visualization
 
 import pylab as P
 x = (cc_federal.NT_GER, cc_partE.NT_GER, cc_partPL.NT_GER, cc_partPNL.NT_GER)
